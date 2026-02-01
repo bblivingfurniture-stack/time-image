@@ -8,7 +8,7 @@ exports.handler = async () => {
   ).getHours();
 
   // Allowed: 21:00 → 04:00
-  const allowed = hour >= 21 || hour < 4;
+  const allowed = hour >= 12 || hour < 4;
 
   if (!allowed) {
     return {
