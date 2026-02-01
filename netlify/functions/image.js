@@ -1,14 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
-exports.handler = async () => {
-  // UK time
+export async function handler() {
   const hour = new Date(
     new Date().toLocaleString("en-GB", { timeZone: "Europe/London" })
   ).getHours();
 
   // Allowed: 21:00 → 04:00
-  const allowed = hour >= 12 || hour < 4;
+  const allowed = hour >= 21 || hour < 4;
 
   if (!allowed) {
     return {
@@ -17,8 +16,11 @@ exports.handler = async () => {
     };
   }
 
-  // Image lives next to this file
-  const imagePath = path.join(__dirname, "image.jpeg");
+  const imagePath = path.join(
+    path.dirname(new URL(import.meta.url).pathname),
+    "image.jpeg"
+  );
+
   const image = fs.readFileSync(imagePath);
 
   return {
@@ -30,4 +32,4 @@ exports.handler = async () => {
     body: image.toString("base64"),
     isBase64Encoded: true,
   };
-};
+}
